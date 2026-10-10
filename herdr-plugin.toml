@@ -1,0 +1,28 @@
+id = "seitahigashi.herdr-sort-spaces"
+name = "Herdr Sort Spaces"
+version = "0.1.0"
+min_herdr_version = "0.9.0"
+description = "Keep Herdr spaces sorted by title (directory name), on create/rename events or on demand."
+platforms = ["linux", "macos"]
+
+# Sort once when the session comes up.
+[[startup]]
+command = ["python3", "sort_spaces.py"]
+
+# Re-sort when a space appears or its title changes.
+# Do NOT hook workspace.moved / workspace.reordered: our own moves would re-trigger us.
+[[events]]
+on = "workspace.created"
+command = ["python3", "sort_spaces.py"]
+
+[[events]]
+on = "workspace.renamed"
+command = ["python3", "sort_spaces.py"]
+
+# On demand: command palette, or bind it in config.toml (see README).
+[[actions]]
+id = "sort"
+title = "Sort Spaces: sort by title"
+description = "Sort all spaces by title (case-insensitive). No-op when already sorted."
+contexts = ["global"]
+command = ["python3", "sort_spaces.py"]
